@@ -1,0 +1,26 @@
+# requirements.txt
+
+# 네이버 API
+requests==2.31.0
+
+# 데이터 처리
+pandas==2.1.0
+numpy==1.24.0
+openpyxl==3.1.0
+
+# 시각화
+matplotlib==3.7.0
+seaborn==0.12.0
+
+# 통계 분석
+scipy==1.11.0
+
+# 환경 변수 관리
+python-dotenv==1.0.0
+
+# 선택: 텍스트 분석
+konlpy==0.6.0  # 한글 형태소 분석 (선택)
+
+# 선택: Jupyter
+jupyter==1.0.0
+ipykernel==6.25.0

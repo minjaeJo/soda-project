@@ -1,0 +1,60 @@
+# .gitignore
+
+# API 키 & 민감 정보 🔒
+config.py
+.env
+*.key
+secrets.json
+
+# 가상환경
+venv/
+env/
+ENV/
+.venv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# 데이터 파일 (용량 큰 파일)
+data/raw/*.csv
+data/processed/*.csv
+*.parquet
+*.feather
+
+# 출력 파일
+output/
+*.png
+*.jpg
+*.pdf
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 로그
+*.log
+
+# 테스트
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 임시 파일
+*.tmp
+*.bak
