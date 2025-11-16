@@ -1,7 +1,6 @@
 # .gitignore
 
 # API 키 & 민감 정보 🔒
-config.py
 .env
 *.key
 secrets.json
