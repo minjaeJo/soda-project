@@ -1,9 +1,27 @@
-# naver_api.py
+# src/naver_api.py
 import requests
 import json
 import pandas as pd
 from datetime import datetime
-from config import NAVER_CLIENT_ID, NAVER_CLIENT_SECRET
+import sys
+from pathlib import Path
+
+# ============================================
+# 임포트 처리 (직접 실행 vs 패키지 임포트)
+# ============================================
+try:
+    # 패키지로 임포트될 때
+    from . import NAVER_CLIENT_ID, NAVER_CLIENT_SECRET
+except ImportError:
+    # 직접 실행될 때
+    current_dir = Path(__file__).resolve().parent
+    project_root = current_dir.parent
+    
+    if str(project_root) not in sys.path:
+        sys.path.insert(0, str(project_root))
+    
+    from config import NAVER_CLIENT_ID, NAVER_CLIENT_SECRET
+
 
 class NaverDataLab:
     """네이버 데이터랩 API"""
@@ -22,7 +40,7 @@ class NaverDataLab:
         - keywords: list of str (최대 5개)
         - start_date: "YYYY-MM-DD"
         - end_date: "YYYY-MM-DD"
-        - time_unit: 'date'(불가!), 'week', 'month'
+        - time_unit: 'date', 'week', 'month'
         - device: '', 'pc', 'mo'
         - gender: '', 'm', 'f'
         - ages: [] or ['1','2'] ~ ['11']
@@ -36,10 +54,10 @@ class NaverDataLab:
                 "keywords": [keyword]
             })
         
-        # 요청 바디
+        # 요청 바디 (날짜 형식 수정: YYYY-MM-DD 그대로 사용)
         body = {
-            "startDate": start_date.replace("-", ""),
-            "endDate": end_date.replace("-", ""),
+            "startDate": start_date,  # ✅ replace 제거
+            "endDate": end_date,      # ✅ replace 제거
             "timeUnit": time_unit,
             "keywordGroups": keyword_groups
         }
@@ -152,9 +170,9 @@ class NaverShopping:
         df = pd.DataFrame(items)
         
         # 가격 정수 변환
-        df['lprice'] = df['lprice'].astype(int)
+        df['lprice'] = pd.to_numeric(df['lprice'], errors='coerce').fillna(0).astype(int)
         if 'hprice' in df.columns:
-            df['hprice'] = df['hprice'].astype(int)
+            df['hprice'] = pd.to_numeric(df['hprice'], errors='coerce').fillna(0).astype(int)
         
         # HTML 태그 제거
         df['title'] = df['title'].apply(lambda x: re.sub('<.*?>', '', x))
@@ -224,3 +242,54 @@ class NaverBlog:
         df['postdate'] = pd.to_datetime(df['postdate'], format='%Y%m%d')
         
         return df
+
+
+# ============================================
+# 테스트 코드 (직접 실행 시)
+# ============================================
+if __name__ == "__main__":
+    print("=" * 60)
+    print("🧪 네이버 API 테스트")
+    print("=" * 60)
+    
+    # 1. DataLab 테스트
+    print("\n1️⃣ 데이터랩 API 테스트")
+    try:
+        datalab = NaverDataLab()
+        result = datalab.get_search_trend(
+            keywords=["선크림"],
+            start_date="2024-01-01",
+            end_date="2024-03-01",
+            time_unit="month"
+        )
+        df = datalab.to_dataframe(result)
+        print(f"✅ 성공: {len(df)}행 수집")
+        print(df.head())
+    except Exception as e:
+        print(f"❌ 실패: {e}")
+    
+    # 2. Shopping 테스트
+    print("\n2️⃣ 쇼핑 검색 API 테스트")
+    try:
+        shopping = NaverShopping()
+        items = shopping.search_products("선크림", display=10)
+        df = shopping.to_dataframe(items['items'])
+        print(f"✅ 성공: {len(df)}개 제품")
+        print(df[['title', 'lprice']].head())
+    except Exception as e:
+        print(f"❌ 실패: {e}")
+    
+    # 3. Blog 테스트
+    print("\n3️⃣ 블로그 검색 API 테스트")
+    try:
+        blog = NaverBlog()
+        items = blog.search_blogs("선크림", display=10)
+        df = blog.to_dataframe(items['items'])
+        print(f"✅ 성공: {len(df)}개 블로그")
+        print(df[['title', 'postdate']].head())
+    except Exception as e:
+        print(f"❌ 실패: {e}")
+    
+    print("\n" + "=" * 60)
+    print("테스트 완료!")
+    print("=" * 60)
