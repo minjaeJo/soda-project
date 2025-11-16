@@ -19,7 +19,7 @@ __pycache__/
 .Python
 
 # 데이터 파일 (용량 큰 파일)
-data/raw/*.csv
+data/*.csv
 data/processed/*.csv
 *.parquet
 *.feather
@@ -32,7 +32,6 @@ output/
 
 # Jupyter Notebook
 .ipynb_checkpoints/
-*.ipynb
 
 # IDE
 .vscode/
