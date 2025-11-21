@@ -1,17 +1,10 @@
-# Soda Project(Seasonal Opportunity Data Analytics)
-
-> 겨울 선크림 시장의 블루오션을 발굴하는 데이터 분석 프로젝트
-
+# 겨울 선크림 시장 진입 타당성 분석 프로젝트
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# 겨울 선크림 시장 진입 타당성 분석 프로젝트
-
+> 본 프로젝트는 '중소/중견 화장품 회사의 마케팅팀이다'라는 가정 아래, 겨울 선크림 신규 시장 진입에 대한 의사결정을 내리기 위해 수행한 데이터 기반 타당성 분석입니다.
+> 
 ## 📋 Executive Summary
-
-**"겨울에도 선크림이 필요할까?"**
-
-본 프로젝트는 '중소/중견 화장품 회사의 마케팅팀이다'라는 가정 아래, 겨울 선크림 신규 시장 진입에 대한 의사결정을 내리기 위해 수행한 데이터 기반 타당성 분석입니다.
 
 **핵심 결론:**
 - ✅ **겨울 시장 존재 확인** (여름의 49.9% 수요)
