@@ -1,4 +1,4 @@
-# Soda Project(Seasonal Opportunity Data Analytics) 🌨️☀️
+# Soda Project(Seasonal Opportunity Data Analytics)
 
 > 겨울 선크림 시장의 블루오션을 발굴하는 데이터 분석 프로젝트
 
