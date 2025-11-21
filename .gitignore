@@ -23,12 +23,6 @@ data/processed/*.csv
 *.parquet
 *.feather
 
-# 출력 파일
-output/
-*.png
-*.jpg
-*.pdf
-
 # Jupyter Notebook
 .ipynb_checkpoints/
 
