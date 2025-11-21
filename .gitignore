@@ -19,7 +19,6 @@ __pycache__/
 .Python
 
 # 데이터 파일 (용량 큰 파일)
-data/*.csv
 data/processed/*.csv
 *.parquet
 *.feather
