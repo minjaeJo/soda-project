@@ -54,10 +54,10 @@ class NaverDataLab:
                 "keywords": [keyword]
             })
         
-        # 요청 바디 (날짜 형식 수정: YYYY-MM-DD 그대로 사용)
+        # 요청 바디
         body = {
-            "startDate": start_date,  # ✅ replace 제거
-            "endDate": end_date,      # ✅ replace 제거
+            "startDate": start_date,
+            "endDate": end_date,
             "timeUnit": time_unit,
             "keywordGroups": keyword_groups
         }
@@ -86,20 +86,35 @@ class NaverDataLab:
             raise Exception(f"API 오류 {response.status_code}: {response.text}")
     
     def to_dataframe(self, api_response):
-        """API 응답을 DataFrame으로 변환"""
+        """API 응답을 DataFrame으로 변환 (개선 버전)"""
         results = api_response['results']
         
-        # 날짜 추출
-        dates = [item['period'] for item in results[0]['data']]
+        if not results:
+            return pd.DataFrame()
         
-        # DataFrame 생성
-        df = pd.DataFrame({'date': dates})
+        # 모든 키워드의 데이터를 먼저 수집
+        all_data = {}
         
-        # 각 키워드 추가
         for result in results:
             keyword = result['title']
-            ratios = [item['ratio'] for item in result['data']]
-            df[keyword] = ratios
+            data_dict = {item['period']: item['ratio'] for item in result['data']}
+            all_data[keyword] = data_dict
+        
+        # 모든 날짜 수집 (합집합)
+        all_dates = set()
+        for data_dict in all_data.values():
+            all_dates.update(data_dict.keys())
+        
+        all_dates = sorted(all_dates)
+        
+        # DataFrame 생성
+        df_dict = {'date': all_dates}
+        
+        for keyword, data_dict in all_data.items():
+            # 각 날짜에 대해 값이 있으면 사용, 없으면 0
+            df_dict[keyword] = [data_dict.get(date, 0) for date in all_dates]
+        
+        df = pd.DataFrame(df_dict)
         
         # 날짜 변환
         df['date'] = pd.to_datetime(df['date'])
